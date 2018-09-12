@@ -9,11 +9,11 @@ at The University of Western Australia.
 Students may use and modify these files to reserach different artificial intelligence agents in the game Hanabi.
 There will also be an AI bot tournament with the additional rules specified below. 
 
-#Rules
+# Rules
 
-##Rules - Hanabi
+## Rules - Hanabi
 
-###Aim:
+### Aim:
 Hanabi is a cooperative game for 2 to 5 players, that is, 
 a game where the players do not play against each other but work together towards a common goal.  
 In this case they are absent minded firework manufacturers who accidentally mixed up powders, fuses and rockets from a firework display.
@@ -21,7 +21,7 @@ The show is about to start and panic is setting in.  They have to work together 
 The pyrotechnicians have to put together 5 fireworks, 1 white, 1 red,  1 blue, 1 yellow, 1 green), 
 by making series rising in number (1, 2, 3, 4, 5) with the same coloured cards.
 
-###Set up:
+### Set up:
 Place the 8 blue tokens in the lid of the box and the 3 red tokens just next to it.  
 Shuffle the 50 cards to make a deck and put them face down.  Deal a hand of cards to each player:
 If there are 2 or 3 players, each player receives 5 cards.  
@@ -33,7 +33,7 @@ They pick them up so that the other players can see them but so that they cannot
 They are not allowed to look at their own cards at all during the game.  
 This would dishonour them and taint their reputation as master pyrotechnicians!*
 
-###Play:
+### Play:
 The players then take their turn going in a clockwise direction.  
 On their turn, a player must complete one, and only one, of the following three actions (you are not allowed to skip your turn):
 1. **Give one piece of information**:
@@ -65,7 +65,7 @@ There can only be one card of each value in each firework (so 5 cards in total).
 When a player completes a firework i.e. plays the card with a value of 5,
 the player puts a blue token back in the lid of the box.  
 
-###End of game:
+### End of game:
 There are 3 ways to end the game of Hanabi :
 1. The game ends immediately and is lost if the third red token is placed in the lid of the box (everyone scores 0 points).
 2. The game ends immediately and it is a stunning victory if 
@@ -76,6 +76,7 @@ There are 3 ways to end the game of Hanabi :
 
 In order to calculate their scores, the players add up the largest value card for each of
 the 5 fireworks. Artistic impression is determined by the Firework Manufacturers International Federation reference scale:
+
 |:**Points**:| **Overall Impression**                                    |
 |:----------:|-----------------------------------------------------------|
 | 0-5        | horrible, booed by the crowd.                             |
