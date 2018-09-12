@@ -77,7 +77,7 @@ There are 3 ways to end the game of Hanabi :
 In order to calculate their scores, the players add up the largest value card for each of
 the 5 fireworks. Artistic impression is determined by the Firework Manufacturers International Federation reference scale:
 
-|:**Points**:| **Overall Impression**                                    |
+| **Points** | **Overall Impression**                                    |
 |:----------:|-----------------------------------------------------------|
 | 0-5        | horrible, booed by the crowd.                             |
 | 6-10       | mediocre, just a spattering of applause.                  |
@@ -87,7 +87,7 @@ the 5 fireworks. Artistic impression is determined by the Firework Manufacturers
 | 25         | legendary, everyone left speechless, stars in their eyes  |
 
 
-##Rules - Tournament
+## Rules - Tournament
 
 1. AI bots must implement the provided agent interface, and there are restrictions for the amount of computation, 
   and system resources they can use: Each agent has 1 second for their turn.
@@ -106,11 +106,11 @@ the 5 fireworks. Artistic impression is determined by the Firework Manufacturers
 
 Good luck.
 
-##Compiling and Running:
--Your agent class should be in the package agents, and import the package hanabAI.
--To compile use your favorite IDE, or from the command line, use:
+## Compiling and Running:
+- Your agent class should be in the package agents, and import the package hanabAI.
+- To compile use your favorite IDE, or from the command line, use:
  `javac -d bin src/*/*.java`
--To run a game, you can edit the main method in hanabAI.Hanabi to use your agents, rather than agents.BasicAgent.
+- To run a game, you can edit the main method in hanabAI.Hanabi to use your agents, rather than agents.BasicAgent.
 However, it is better to build a contest class in the default package to run extensive experiments.
--To run the main method in hanabAI.Hanabi, use your favorite IDE, or from the commandline, use:
+- To run the main method in hanabAI.Hanabi, use your favorite IDE, or from the commandline, use:
  `java -cp bin hanabAI.Hanabi`
