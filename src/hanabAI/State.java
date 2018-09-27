@@ -261,6 +261,7 @@ public class State implements Cloneable{
    **/
   public int getScore(){
     int score = 0;
+    if(fuse==0) return score;
     for(Colour c: Colour.values()) 
       if(!fireworks.get(c).isEmpty())score+=fireworks.get(c).peek().getValue();
     return score;
