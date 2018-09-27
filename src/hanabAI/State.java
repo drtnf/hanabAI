@@ -76,11 +76,11 @@ public class State implements Cloneable{
        Stack<Card> fw = fireworks.get(c.getColour());
        if((fw.isEmpty() && c.getValue() == 1) || (!fw.isEmpty() && fw.peek().getValue()==c.getValue()-1)){
          s.fireworks.get(c.getColour()).push(c);
-         if(s.fireworks.get(c.getColour()).size()==5 && hints<8) hints++;
+         if(s.fireworks.get(c.getColour()).size()==5 && s.hints<8) s.hints++;
        }
        else{
          s.discards.push(c);
-         fuse--;
+         s.fuse--;
        }
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
        if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
