@@ -173,11 +173,11 @@ public class BasicAgent implements Agent{
     return null;
   }
 
-  //with probability 0.1 for each fuse token, play a random card 
+  //with probability 0.05 for each fuse token, play a random card 
   public Action playGuess(State s) throws IllegalActionException{
     java.util.Random rand = new java.util.Random();
     for(int i = 0; i<s.getFuseTokens(); i++){
-      if(rand.nextDouble()<0.1){
+      if(rand.nextDouble()<0.05){
         int cardIndex = rand.nextInt(colours.length);
         colours[cardIndex] = null;
         values[cardIndex] = 0;
