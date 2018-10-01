@@ -136,7 +136,7 @@ public class State implements Cloneable{
       case PLAY:
         return (a.getCard()>=0 && a.getCard()<hands[nextPlayer].length); 
       case DISCARD: 
-        if(hints<8) throw new IllegalActionException("Discards cannot be made when there are 8 hint tokens");
+        if(hints==8) throw new IllegalActionException("Discards cannot be made when there are 8 hint tokens");
         return (a.getCard()>=0 && a.getCard()<hands[nextPlayer].length);
       case HINT_COLOUR:
         if(hints==0 || a.getHintReceiver() <0 || a.getHintReceiver()>players.length || a.getHintReceiver() == a.getPlayer()) return false; 
