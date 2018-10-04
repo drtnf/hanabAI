@@ -32,7 +32,7 @@ public class BasicAgent implements Agent{
    **/
   public void init(State s){
     numPlayers = s.getPlayers().length;
-    if(numPlayers==5){
+    if(numPlayers>3){
       colours = new Colour[4];
       values = new int[4];
     }
