@@ -22,6 +22,10 @@ public class Action{
   private Colour colour;
   //The value hinted, if the action is a value hint.
   private int value;
+  //The card played by the action, added after move
+  private Card cardValue;
+  //Card added to firework
+  private boolean discarded;
 
   //common constructor for all actions
   private Action(int player, String playerName, ActionType type){
@@ -75,6 +79,24 @@ public class Action{
     this.hintee = hintReceiver;
     this.cards = cards;
     this.value = hint;
+  }
+
+  /**
+   * Constructor to create a new action with card played information added to action
+   * @param a action to add information to
+   * @param c card played as a result of move
+   * @param discarded card discarded
+   * @throws IllegalActionException if the wrong ActionType is given
+   */
+  public Action(Action a, Card c, boolean discarded) throws IllegalActionException {
+    if(a.type != ActionType.PLAY && (a.type != ActionType.DISCARD)) throw new IllegalActionException("Wrong parameters for action type");
+    this.player = a.player;
+    this.playerName = a.playerName;
+    this.type = a.type;
+    this.card = a.card;
+
+    this.cardValue = c;
+    this.discarded = discarded;
   }
 
   /**
@@ -138,6 +160,27 @@ public class Action{
   public int getValue() throws IllegalActionException{
     if(type != ActionType.HINT_VALUE) throw new IllegalActionException("Action is not a value hint");
     return value;
+  }
+
+  /**
+   * Gets the card value played by this action
+   * @return the card played by this move
+   * @throws IllegalActionException
+   */
+  public Card getCardValue() throws IllegalActionException {
+    if(type != ActionType.PLAY && type!= ActionType.DISCARD) throw new IllegalActionException("Card is not defined");
+    return this.cardValue;
+  }
+
+  /**
+   * Was the card discarded by this move or otherwise added to a firework
+   *
+   * @return whether card was discarded by move
+   * @throws IllegalActionException
+   */
+  public boolean getDiscarded() throws IllegalActionException {
+    if(type != ActionType.PLAY && type!= ActionType.DISCARD) throw new IllegalActionException("Card is not defined");
+    return this.discarded;
   }
 
   /**

@@ -73,11 +73,14 @@ public class State implements Cloneable{
      case PLAY:
        Card c = hands[action.getPlayer()][action.getCard()];
        Stack<Card> fw = fireworks.get(c.getColour());
+       boolean discarded;
        if((fw.isEmpty() && c.getValue() == 1) || (!fw.isEmpty() && fw.peek().getValue()==c.getValue()-1)){
+         discarded = false;
          s.fireworks.get(c.getColour()).push(c);
          if(s.fireworks.get(c.getColour()).size()==5 && s.hints<8) s.hints++;
        }
        else{
+         discarded = true;
          s.discards.push(c);
          s.fuse--;
        }
@@ -86,6 +89,7 @@ public class State implements Cloneable{
         if(finalAction==-1) s.finalAction = order+players.length;
         s.hands[action.getPlayer()][action.getCard()] = null;
        }
+       action = new Action(action, c, discarded);
        break;  
      case DISCARD:
        c = hands[action.getPlayer()][action.getCard()];
@@ -96,6 +100,7 @@ public class State implements Cloneable{
         s.hands[action.getPlayer()][action.getCard()] = null;
        }
        if(hints<8) s.hints++;
+       action = new Action(action, c, true);
        break;
      case HINT_COLOUR: 
        s.hints--; 
@@ -269,7 +274,7 @@ public class State implements Cloneable{
    * Get final action
    * @return the index of the player who will make the final action
    */
-  public int getFinalAction() {return finalAction};
+  public int getFinalAction() {return finalAction;};
 
   /**
    * Get the current score
