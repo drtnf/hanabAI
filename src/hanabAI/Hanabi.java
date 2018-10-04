@@ -66,6 +66,7 @@ public class Hanabi{
   }
 
   public static String critique(int score){
+    if(score==0) return "Tragic: The pyrotechnicians are obliterated by their own incompetence.\n";
     if(score<6) return "Horrible: boos from the crowd.\n";
     if(score<11) return "Poor: a smattering of applause.\n";
     if(score<16) return "Honourable: but no one will remember it.\n";

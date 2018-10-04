@@ -3,17 +3,10 @@ import hanabAI.*;
 
 
 /**
- * A simple reflex agent for playing Hanabi.
- * The agent uses the following rules:
- * - Play a card if it is definitely able to be played.
- * - Discard a card if it is definitely not required.
- * - with probability 0.1*fuse play a card that matches the colour or number of a required card,
- *   with probability 0.4 give a colour hint to the next player with a required card,
- *   with probability 0.4 give a number hint to the next player with a required card,
- *   otherwise discard a random card.
+ * A model agent for playing Hanabi.
  *@author Tim French 
  **/
-public class BasicAgent implements Agent{
+public class Fusion implements Agent{
 
   private Colour[] colours;
   private int[] values;
@@ -24,7 +17,7 @@ public class BasicAgent implements Agent{
   /**
    * Default constructor, does nothing.
    * **/
-  public BasicAgent(){}
+  public Fusion(){}
 
   /**
    * Initialises variables on the first call to do action.
@@ -32,7 +25,7 @@ public class BasicAgent implements Agent{
    **/
   public void init(State s){
     numPlayers = s.getPlayers().length;
-    if(numPlayers>3){
+    if(numPlayers==5){
       colours = new Colour[4];
       values = new int[4];
     }
@@ -69,7 +62,7 @@ public class BasicAgent implements Agent{
       init(s);
     } 
     //Assume players index is sgetNextPlayer()
-    index = s.getNextPlayer();
+    int index = s.getNextPlayer();
     //get any hints
     try{
       getHints(s);
@@ -78,7 +71,6 @@ public class BasicAgent implements Agent{
       if(a==null) a = hint(s);
       if(a==null) a = playGuess(s);
       if(a==null) a = discardGuess(s);
-      if(a==null) a = hintRandom(s);
       return a;
     }
     catch(IllegalActionException e){
@@ -131,13 +123,11 @@ public class BasicAgent implements Agent{
 
   //discards the first card known to be unplayable.
   public Action discardKnown(State s) throws IllegalActionException{
-    if (s.getHintTokens() != 8) {
-      for(int i = 0; i<colours.length; i++){
-        if(colours[i]!=null && values[i]>0 && values[i]<playable(s,colours[i])){
-          colours[i] = null;
-          values[i] = 0;
-          return new Action(index, toString(), ActionType.DISCARD,i);
-        }
+    for(int i = 0; i<colours.length; i++){
+      if(colours[i]!=null && values[i]>0 && values[i]<playable(s,colours[i])){
+        colours[i] = null;
+        values[i] = 0;
+        return new Action(index, toString(), ActionType.DISCARD,i);
       }
     }
     return null;
@@ -153,19 +143,19 @@ public class BasicAgent implements Agent{
         Card[] hand = s.getHand(hintee);
         for(int j = 0; j<hand.length; j++){
           Card c = hand[j];
-          if(c!=null && c.getValue()==playable(s,c.getColour())){
+          if(c.getValue()==playable(s,c.getColour())){
             //flip coin
             if(Math.random()>0.5){//give colour hint
               boolean[] col = new boolean[hand.length];
               for(int k = 0; k< col.length; k++){
-                col[k]=c.getColour().equals((hand[k]==null?null:hand[k].getColour()));
+                col[k]=c.getColour().equals(hand[k].getColour());
               }
               return new Action(index,toString(),ActionType.HINT_COLOUR,hintee,col,c.getColour());
             }
             else{//give value hint
               boolean[] val = new boolean[hand.length];
               for(int k = 0; k< val.length; k++){
-                val[k]=c.getValue() == (hand[k]==null?-1:hand[k].getValue());
+                val[k]=c.getValue()== hand[k].getValue();
               }
               return new Action(index,toString(),ActionType.HINT_VALUE,hintee,val,c.getValue());
             }
@@ -192,47 +182,11 @@ public class BasicAgent implements Agent{
   
   //discard a random card
   public Action discardGuess(State s) throws IllegalActionException{
-    if (s.getHintTokens() != 8) {
-      java.util.Random rand = new java.util.Random();
-      int cardIndex = rand.nextInt(colours.length);
-      colours[cardIndex] = null;
-      values[cardIndex] = 0;
-      return new Action(index, toString(), ActionType.DISCARD, cardIndex);
-    }
-    return null;
-  }
-
-  //gives random hint of a card in next players hand
-  //flips a coin to determine whether it is a colour hint or value hint
-  //return null if no hint token left
-  public Action hintRandom(State s) throws IllegalActionException{
-    if(s.getHintTokens()>0){
-        int hintee = (index+1)%numPlayers;
-        Card[] hand = s.getHand(hintee);
-
-        java.util.Random rand = new java.util.Random();
-        int cardIndex = rand.nextInt(hand.length);
-        while(hand[cardIndex]==null) cardIndex = rand.nextInt(hand.length);
-        Card c = hand[cardIndex];
-
-        if(Math.random()>0.5){//give colour hint
-          boolean[] col = new boolean[hand.length];
-          for(int k = 0; k< col.length; k++){
-            col[k]=c.getColour().equals(hand[k].getColour());
-          }
-          return new Action(index,toString(),ActionType.HINT_COLOUR,hintee,col,c.getColour());
-        }
-        else{//give value hint
-          boolean[] val = new boolean[hand.length];
-          for(int k = 0; k< val.length; k++){
-            val[k]=c.getValue()== hand[k].getValue();
-          }
-          return new Action(index,toString(),ActionType.HINT_VALUE,hintee,val,c.getValue());
-        }
-
-      }
-    
-    return null;
+    java.util.Random rand = new java.util.Random();
+    int cardIndex = rand.nextInt(colours.length);
+    colours[cardIndex] = null;
+    values[cardIndex] = 0;
+    return new Action(index, toString(), ActionType.DISCARD, cardIndex);
   }
 
 }

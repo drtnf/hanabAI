@@ -82,13 +82,19 @@ public class State implements Cloneable{
          s.fuse--;
        }
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
+       if(deck.isEmpty()){
+        if(finalAction==-1) s.finalAction = order+players.length;
+        s.hands[action.getPlayer()][action.getCard()] = null;
+       }
        break;  
      case DISCARD:
        c = hands[action.getPlayer()][action.getCard()];
        s.discards.push(c);
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
+       if(deck.isEmpty()){
+        if(finalAction==-1) s.finalAction = order+players.length;
+        s.hands[action.getPlayer()][action.getCard()] = null;
+       }
        if(hints<8) s.hints++;
        break;
      case HINT_COLOUR: 
@@ -140,14 +146,18 @@ public class State implements Cloneable{
       case HINT_COLOUR:
         if(hints==0 || a.getHintReceiver() <0 || a.getHintReceiver()>players.length || a.getHintReceiver() == a.getPlayer()) return false; 
         boolean[] hint = new boolean[hands[a.getHintReceiver()].length];
-        for(int i = 0; i<hint.length; i++)
-          hint[i] = hands[a.getHintReceiver()][i].getColour()==a.getColour();
+        for(int i = 0; i<hint.length; i++){
+          Card c = hands[a.getHintReceiver()][i];
+          hint[i] = (c==null?null:c.getColour())==a.getColour();
+        }
         return Arrays.equals(hint, a.getHintedCards());
       case HINT_VALUE:
         if(hints==0 || a.getHintReceiver() <0 || a.getHintReceiver()>players.length || a.getHintReceiver() == a.getPlayer()) return false; 
         hint = new boolean[hands[a.getHintReceiver()].length];
-        for(int i = 0; i<hint.length; i++)
-          hint[i] = hands[a.getHintReceiver()][i].getValue()==a.getValue();
+        for(int i = 0; i<hint.length; i++){
+          Card c = hands[a.getHintReceiver()][i];
+          hint[i] = (c==null?-1:c.getValue())==a.getValue();
+        }
         return Arrays.equals(hint, a.getHintedCards());
       default: return false;
     }
