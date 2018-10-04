@@ -47,8 +47,7 @@ public class State implements Cloneable{
     discards = new Stack<Card>();
     fireworks = new HashMap<Colour,Stack<Card>>();
     for(Colour c: Colour.values())fireworks.put(c,new Stack<Card>());
-    if(players.length==5) hands = new Card[5][4];
-    else hands = new Card[players.length][5];
+    hands = new Card[players.length][players.length>3?4:5];
     for(int i = 0; i<hands.length; i++)
       for(int j = 0; j<hands[i].length; j++) 
         hands[i][j]=deck.pop();
