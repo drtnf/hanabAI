@@ -222,7 +222,7 @@ public class State implements Cloneable{
 
   /** 
    * Gets a clone of the discard stack
-   * @return a clone of teh discard stack
+   * @return a clone of the discard stack
    **/
   public Stack<Card> getDiscards(){return (Stack<Card>) discards.clone();}
 
@@ -291,7 +291,11 @@ public class State implements Cloneable{
   public Object clone(){
     try{
       State s = (State) super.clone();
+      s.players = players.clone();
+      s.discards = (Stack<Card>)discards.clone();
+      s.hands = (Card[][]) hands.clone();
       for(int i = 0; i<hands.length; i++) s.hands[i] = (Card[])s.hands[i].clone();
+      s.fireworks = (Map<Colour,Stack<Card>>)((HashMap)fireworks).clone();
       for(Colour c: Colour.values()) s.fireworks.put(c,(Stack<Card>)fireworks.get(c).clone());
       return s;
     }
