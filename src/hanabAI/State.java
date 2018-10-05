@@ -61,13 +61,15 @@ public class State implements Cloneable{
 
   /**
    *A method to create the next state from the given state and a move.
+   *This method will only work if no hand has been hidden (since it allows agents to infer the result of actions).
    *@param deck the deck of cards
    *@param action the action made
-   *@throws IllegalActionException if the move is not legal in the current state
+   *@throws IllegalActionException if the move is not legal in the current state, or one hand has been hidden.
    **/
   public State nextState(Action action, Stack<Card> deck) throws IllegalActionException{
    if(!legalAction(action)) throw new IllegalActionException("Invalid action!: "+action);
    if(gameOver()) throw new IllegalActionException("Game Over!");
+   if(observer!=-1) throw new IllegalActionException("Next state unavailable!");
    State s = (State)this.clone();
    switch(action.getType()){
      case PLAY:
@@ -124,7 +126,7 @@ public class State implements Cloneable{
       local.observer=observer;
       return local;
     }
-    else throw new IllegalActionException("Hand already hidden");
+    else throw new IllegalActionException("Hand already hidden, or observer out of bounds");
   }
   
   /**
@@ -212,13 +214,27 @@ public class State implements Cloneable{
    * @throws ArrayIndexOUtOfBoundsException if the specified player has not yet performed an action
    **/
   public Action getPreviousAction(int player){
-    Action a = previousAction;
     State s = this;
-    while(s!=null && s.previousAction.getPlayer()!=player)
+    while(s!=null && s.previousAction !=null && s.previousAction.getPlayer()!=player)
       s = s.previousState;
-    if(s==null) throw new ArrayIndexOutOfBoundsException("Player has not played yet");
+    if(s==null || s.previousAction==null) throw new ArrayIndexOutOfBoundsException("Player has not played yet");
     else return s.previousAction;
   }
+
+  /**
+   * Gets the card played in the previous move, 
+   * or null if it is the first move, 
+   * or the previous move was a hint.
+   * @return the card played in the previous action, 
+   * or null if there is no previous action, or the action was a hint.
+   * */
+  public Card previousCardPlayed(){
+    try{
+      return previousState.getHand(previousAction.getPlayer())[previousAction.getCard()];
+    }
+    catch(Exception e){return null;}
+  }
+
 
   /** 
    * Gets a clone of the discard stack
@@ -246,6 +262,7 @@ public class State implements Cloneable{
   public int getFuseTokens(){return fuse;}
 
 
+
   /**
    * Gets the observer, or -1 if global state
    * @return the agent index of the observer, or -1 if that state is Global
@@ -271,7 +288,7 @@ public class State implements Cloneable{
    **/
   public int getScore(){
     int score = 0;
-    if(fuse==0) return score;
+    if(fuse==0) return 0;
     for(Colour c: Colour.values()) 
       if(!fireworks.get(c).isEmpty())score+=fireworks.get(c).peek().getValue();
     return score;
