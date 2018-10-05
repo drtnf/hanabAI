@@ -75,11 +75,14 @@ public class State implements Cloneable{
      case PLAY:
        Card c = hands[action.getPlayer()][action.getCard()];
        Stack<Card> fw = fireworks.get(c.getColour());
+       boolean discarded;
        if((fw.isEmpty() && c.getValue() == 1) || (!fw.isEmpty() && fw.peek().getValue()==c.getValue()-1)){
+         discarded = false;
          s.fireworks.get(c.getColour()).push(c);
          if(s.fireworks.get(c.getColour()).size()==5 && s.hints<8) s.hints++;
        }
        else{
+         discarded = true;
          s.discards.push(c);
          s.fuse--;
        }
@@ -88,6 +91,7 @@ public class State implements Cloneable{
         if(finalAction==-1) s.finalAction = order+players.length;
         s.hands[action.getPlayer()][action.getCard()] = null;
        }
+       action = new Action(action, c, discarded);
        break;  
      case DISCARD:
        c = hands[action.getPlayer()][action.getCard()];
@@ -98,6 +102,7 @@ public class State implements Cloneable{
         s.hands[action.getPlayer()][action.getCard()] = null;
        }
        if(hints<8) s.hints++;
+       action = new Action(action, c, true);
        break;
      case HINT_COLOUR: 
        s.hints--; 
@@ -177,7 +182,7 @@ public class State implements Cloneable{
    * Gives the cards of the specified player
    * @param player the index of the player is the game
    * @return an array of cards in player's hand, or an empty array, if the cards are hidden.
-   * @throws ArrayIndexOutOfBounds if there is no player of the given index.
+   * @throws ArrayIndexOutOfBoundsException if there is no player of the given index.
    **/  
   public Card[] getHand(int player)throws ArrayIndexOutOfBoundsException{
     if(player<0 || player>=players.length) throw new ArrayIndexOutOfBoundsException();
@@ -211,7 +216,7 @@ public class State implements Cloneable{
   /**
    * Gets the last action performed in the game, by the specified player
    * @return the last action performed by the given player, prior to this state.
-   * @throws ArrayIndexOUtOfBoundsException if the specified player has not yet performed an action
+   * @throws ArrayIndexOutOfBoundsException if the specified player has not yet performed an action
    **/
   public Action getPreviousAction(int player){
     State s = this;
@@ -281,7 +286,13 @@ public class State implements Cloneable{
    * @return the order the state appears in the game, from first (1) to last.
    **/
   public int getOrder(){return order;}
-  
+
+  /**
+   * Get final action
+   * @return the index of the player who will make the final action
+   */
+  public int getFinalAction() {return finalAction;};
+
   /**
    * Get the current score
    * @return the sum of the highest value cards in each firework
