@@ -120,9 +120,11 @@ public class BasicAgent implements Agent{
   //plays the first card known to be playable.
   public Action playKnown(State s) throws IllegalActionException{
     for(int i = 0; i<colours.length; i++){
-      Action a = new Action(index, toString(), ActionType.PLAY, i);
-      State test = s.nextState(a,Card.shuffledDeck());
-      if(test.getFuseTokens()==s.getFuseTokens()) return a;
+      if(colours[i]!=null && values[i]==playable(s,colours[i])){
+        colours[i] = null;
+        values[i] = 0;
+        return new Action(index, toString(), ActionType.PLAY,i);
+      }
     }
     return null;
   }
