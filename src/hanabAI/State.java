@@ -281,7 +281,16 @@ public class State implements Cloneable{
    * @return the order the state appears in the game, from first (1) to last.
    **/
   public int getOrder(){return order;}
-  
+
+  /**
+   * Returns the order of the final action, if it is known.
+   * When the final card is drawn from the deck, every player has one more action remaining.
+   * The order of the final action, is the order of the action that drew the final card, 
+   * plus the number of players in the game.
+   * @return the order of the final action, or -1 if the deck is not empty
+   **/
+  public int getFinalActionIndex(){return finalAction;} 
+
   /**
    * Get the current score
    * @return the sum of the highest value cards in each firework
