@@ -1,2 +1,8 @@
-# ignore class files`
-*.class
+# ignore class files
+**/*.class
+#ignore the model solution
+src/agents/ModelAgent*
+#ignore the buildfile
+build.sh
+#ignore the doc
+doc/*

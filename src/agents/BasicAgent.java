@@ -153,19 +153,19 @@ public class BasicAgent implements Agent{
         Card[] hand = s.getHand(hintee);
         for(int j = 0; j<hand.length; j++){
           Card c = hand[j];
-          if(c.getValue()==playable(s,c.getColour())){
+          if(c!=null && c.getValue()==playable(s,c.getColour())){
             //flip coin
             if(Math.random()>0.5){//give colour hint
               boolean[] col = new boolean[hand.length];
               for(int k = 0; k< col.length; k++){
-                col[k]=c.getColour().equals(hand[k].getColour());
+                col[k]=c.getColour().equals((hand[k]==null?null:hand[k].getColour()));
               }
               return new Action(index,toString(),ActionType.HINT_COLOUR,hintee,col,c.getColour());
             }
             else{//give value hint
               boolean[] val = new boolean[hand.length];
               for(int k = 0; k< val.length; k++){
-                val[k]=c.getValue()== hand[k].getValue();
+                val[k]=c.getValue() == (hand[k]==null?-1:hand[k].getValue());
               }
               return new Action(index,toString(),ActionType.HINT_VALUE,hintee,val,c.getValue());
             }
@@ -212,20 +212,21 @@ public class BasicAgent implements Agent{
 
         java.util.Random rand = new java.util.Random();
         int cardIndex = rand.nextInt(hand.length);
-
+        while(hand[cardIndex]==null) cardIndex = rand.nextInt(hand.length);
         Card c = hand[cardIndex];
 
         if(Math.random()>0.5){//give colour hint
           boolean[] col = new boolean[hand.length];
           for(int k = 0; k< col.length; k++){
-            col[k]=c.getColour().equals(hand[k].getColour());
+            col[k]=c.getColour().equals((hand[k]==null?null:hand[k].getColour()));
           }
           return new Action(index,toString(),ActionType.HINT_COLOUR,hintee,col,c.getColour());
         }
         else{//give value hint
           boolean[] val = new boolean[hand.length];
           for(int k = 0; k< val.length; k++){
-            val[k]=c.getValue()== hand[k].getValue();
+            if (hand[k] == null) continue;
+            val[k]=c.getValue() == (hand[k]==null?-1:hand[k].getValue());
           }
           return new Action(index,toString(),ActionType.HINT_VALUE,hintee,val,c.getValue());
         }
