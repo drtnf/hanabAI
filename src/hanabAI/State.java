@@ -230,7 +230,7 @@ public class State implements Cloneable{
    * */
   public Card previousCardPlayed(){
     try{
-      return previousState.hands[player][previousAction.getCard()];
+      return previousState.hands[previousAction.getPlayer()][previousAction.getCard()];
     }
     catch(Exception e){return null;}
   }
