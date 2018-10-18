@@ -133,6 +133,7 @@ public class State implements Cloneable{
    * @throws IllegalActionException
    **/
   public boolean legalAction(Action a) throws IllegalActionException{
+    if(a==null) throw new IllegalActionException("Action is null");
     if(observer!=-1 && a.getPlayer()!=observer) throw new IllegalActionException("Local states may only test the legality of observers moves");
     if(a.getPlayer()!=nextPlayer) return false;
     switch(a.getType()){
@@ -193,7 +194,7 @@ public class State implements Cloneable{
    **/
   public State getPreviousState(){
     State s = previousState;
-    s.observer = observer;
+    if(s!=null) s.observer = observer;
     return s;
   }
 
