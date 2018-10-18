@@ -84,19 +84,15 @@ public class State implements Cloneable{
          s.fuse--;
        }
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       if(deck.isEmpty()){
-        if(finalAction==-1) s.finalAction = order+players.length;
-        s.hands[action.getPlayer()][action.getCard()] = null;
-       }
+       else s.hands[action.getPlayer()][action.getCard()] = null;
+       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
        break;  
      case DISCARD:
        c = hands[action.getPlayer()][action.getCard()];
        s.discards.push(c);
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       if(deck.isEmpty()){
-        if(finalAction==-1) s.finalAction = order+players.length;
-        s.hands[action.getPlayer()][action.getCard()] = null;
-       }
+       else s.hands[action.getPlayer()][action.getCard()] = null;
+       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
        if(hints<8) s.hints++;
        break;
      case HINT_COLOUR: 
@@ -230,7 +226,7 @@ public class State implements Cloneable{
    * */
   public Card previousCardPlayed(){
     try{
-      return previousState.getHand(previousAction.getPlayer())[previousAction.getCard()];
+      return previousState.hands[previousAction.getPlayer()][previousAction.getCard()];
     }
     catch(Exception e){return null;}
   }
@@ -308,7 +304,7 @@ public class State implements Cloneable{
    * @return true if all fireworks have been made, the deck has run out, or a fues has exploded.
    **/
   public boolean gameOver(){
-    return (order==finalAction || fuse == 0 || getScore()==25);
+    return ((finalAction!=-1 &&order==finalAction+1) || fuse == 0 || getScore()==25);
   }
 
   /**

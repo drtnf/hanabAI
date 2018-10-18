@@ -78,6 +78,11 @@ public class Card{
     return false;
   }
 
+  public int hashCode(){
+    return 5*colour.ordinal()+value;
+  }
+
+
   private static Card[] deck = {
     new Card(Colour.BLUE,1),new Card(Colour.BLUE,1), new Card(Colour.BLUE,1),
     new Card(Colour.BLUE,2),new Card(Colour.BLUE,2),new Card(Colour.BLUE,3),new Card(Colour.BLUE,3),
