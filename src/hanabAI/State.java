@@ -91,10 +91,8 @@ public class State implements Cloneable{
        c = hands[action.getPlayer()][action.getCard()];
        s.discards.push(c);
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       else{
-        if(finalAction==-1) s.finalAction = order+players.length-1;
-        s.hands[action.getPlayer()][action.getCard()] = null;
-       }
+       else s.hands[action.getPlayer()][action.getCard()] = null;
+       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
        if(hints<8) s.hints++;
        break;
      case HINT_COLOUR: 
