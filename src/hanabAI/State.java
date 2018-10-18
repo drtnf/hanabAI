@@ -336,6 +336,11 @@ public class State implements Cloneable{
     ret+="Players' hands:\n";
     for(int i = 0; i<players.length; i++){
       ret+=players[i]+" ("+i+"): ";
+      if(i == observer){
+        for(Card c: hands[i])ret+="-         ";
+        ret+="\n";
+        continue;
+      }
       for(Card c: hands[i])ret+=c+" ";
       ret+="\n";
     }
