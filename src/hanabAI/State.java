@@ -84,10 +84,8 @@ public class State implements Cloneable{
          s.fuse--;
        }
        if(!deck.isEmpty()) s.hands[action.getPlayer()][action.getCard()] = deck.pop();
-       else{
-        if(finalAction==-1) s.finalAction = order+players.length-1;
-        s.hands[action.getPlayer()][action.getCard()] = null;
-       }
+       else s.hands[action.getPlayer()][action.getCard()] = null;
+       if(deck.isEmpty() && finalAction==-1) s.finalAction = order+players.length;
        break;  
      case DISCARD:
        c = hands[action.getPlayer()][action.getCard()];
@@ -308,7 +306,7 @@ public class State implements Cloneable{
    * @return true if all fireworks have been made, the deck has run out, or a fues has exploded.
    **/
   public boolean gameOver(){
-    return (order==finalAction || fuse == 0 || getScore()==25);
+    return ((finalAction!=-1 &&order==finalAction+1) || fuse == 0 || getScore()==25);
   }
 
   /**
