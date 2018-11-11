@@ -1,0 +1,8 @@
+# ignore class files
+**/*.class
+#ignore the buildfile
+build.sh
+#ignore the doc
+doc/*
+#ignore the log files
+**/*.log
